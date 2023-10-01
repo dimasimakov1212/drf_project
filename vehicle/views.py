@@ -1,7 +1,8 @@
 from rest_framework import viewsets, generics
 
-from vehicle.models import Car, Moto
-from vehicle.serializers import CarSerializer, MotoSerializer, MilageSerializer
+from vehicle.models import Car, Moto, Milage
+from vehicle.serializers import CarSerializer, MotoSerializer, MilageSerializer, MotoMilageSerializer, \
+    MotoCreateSerializer
 
 
 class CarViewSet(viewsets.ModelViewSet):
@@ -16,7 +17,8 @@ class MotoCreateAPIView(generics.CreateAPIView):
     """
     класс для создания мото на основе generics
     """
-    serializer_class = MotoSerializer
+    # serializer_class = MotoSerializer
+    serializer_class = MotoCreateSerializer  # используем переопределенный сериализатор
 
 
 class MotoListAPIView(generics.ListAPIView):
@@ -55,3 +57,11 @@ class MilageCreateAPIView(generics.CreateAPIView):
     класс для создания пробега на основе generics
     """
     serializer_class = MilageSerializer
+
+
+class MotoMilageListAPIView(generics.ListAPIView):
+    """
+    класс для вывода списка мото на основе generics
+    """
+    serializer_class = MotoMilageSerializer
+    queryset = Milage.objects.filter(moto__isnull=False)

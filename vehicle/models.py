@@ -39,8 +39,10 @@ class Milage(models.Model):
     """
     Класс для создания пробега
     """
-    car = models.ForeignKey(Car, on_delete=models.CASCADE, null=True, blank=True, verbose_name='авто')
-    moto = models.ForeignKey(Moto, on_delete=models.CASCADE, null=True, blank=True, verbose_name='мото')
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, null=True, blank=True, verbose_name='авто',
+                            related_name='milage')
+    moto = models.ForeignKey(Moto, on_delete=models.CASCADE, null=True, blank=True, verbose_name='мото',
+                             related_name='milage')
 
     milage = models.PositiveIntegerField(verbose_name='пробег')
     year = models.PositiveSmallIntegerField(verbose_name='год регистрации')
