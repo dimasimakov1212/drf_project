@@ -1,4 +1,6 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
+from rest_framework.filters import OrderingFilter
 
 from vehicle.models import Car, Moto, Milage
 from vehicle.serializers import CarSerializer, MotoSerializer, MilageSerializer, MotoMilageSerializer, \
@@ -59,9 +61,21 @@ class MilageCreateAPIView(generics.CreateAPIView):
     serializer_class = MilageSerializer
 
 
+class MilageListAPIView(generics.ListAPIView):
+    """
+    класс для списка пробегов
+    """
+    serializer_class = MilageSerializer
+    queryset = Milage.objects.all()
+
+    filter_backends = [DjangoFilterBackend, OrderingFilter]  # Бэкенд для обработки фильтра
+    filterset_fields = ('car', 'moto')  # Набор полей для фильтрации
+    ordering_fields = ['year']
+
+
 class MotoMilageListAPIView(generics.ListAPIView):
     """
-    класс для вывода списка мото на основе generics
+    класс для вывода списка пробегов мото на основе generics
     """
     serializer_class = MotoMilageSerializer
     queryset = Milage.objects.filter(moto__isnull=False)

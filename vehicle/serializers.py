@@ -80,7 +80,7 @@ class MotoCreateSerializer(serializers.ModelSerializer):
         :param validated_data:
         :return:
         """
-        milage = validated_data.pop('milage')
+        milage = validated_data.pop('milage')   # исключаем поле 'milage'
 
         moto_item = Moto.objects.create(**validated_data)
 
