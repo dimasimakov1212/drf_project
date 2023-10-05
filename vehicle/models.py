@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -7,6 +8,8 @@ class Car(models.Model):
     """
     car_title = models.CharField(max_length=150, verbose_name='название')
     car_description = models.TextField(verbose_name='описание')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='владелец',
+                              blank=True, null=True)
 
     def __str__(self):
         # Строковое отображение объекта
@@ -24,6 +27,8 @@ class Moto(models.Model):
     """
     moto_title = models.CharField(max_length=150, verbose_name='название')
     moto_description = models.TextField(verbose_name='описание')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='владелец',
+                              blank=True, null=True)
 
     def __str__(self):
         # Строковое отображение объекта
