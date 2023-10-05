@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
+from rest_framework.permissions import IsAuthenticated
 
 from vehicle.models import Car, Moto, Milage
 from vehicle.serializers import CarSerializer, MotoSerializer, MilageSerializer, MotoMilageSerializer, \
@@ -29,6 +30,7 @@ class MotoListAPIView(generics.ListAPIView):
     """
     serializer_class = MotoSerializer
     queryset = Moto.objects.all()
+    permission_classes = [IsAuthenticated]  # просмотр списка мото доступно только авторизованным пользователям
 
 
 class MotoRetrieveAPIView(generics.RetrieveAPIView):
