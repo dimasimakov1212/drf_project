@@ -1,8 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
+from rest_framework.permissions import IsAuthenticated
 
 from vehicle.models import Car, Moto, Milage
+from vehicle.paginators import VehiclePaginator
+from vehicle.permissions import IsOwnerOrStaff
 from vehicle.serializers import CarSerializer, MotoSerializer, MilageSerializer, MotoMilageSerializer, \
     MotoCreateSerializer
 
@@ -21,6 +24,15 @@ class MotoCreateAPIView(generics.CreateAPIView):
     """
     # serializer_class = MotoSerializer
     serializer_class = MotoCreateSerializer  # используем переопределенный сериализатор
+    permission_classes = [IsAuthenticated]  # создание мото доступно только авторизованным пользователям
+
+    def perform_create(self, serializer):
+        """
+        Определяем порядок создания нового объекта
+        """
+        new_moto = serializer.save()
+        new_moto.owner = self.request.user  # задаем владельца мото
+        new_moto.save()
 
 
 class MotoListAPIView(generics.ListAPIView):
@@ -29,6 +41,9 @@ class MotoListAPIView(generics.ListAPIView):
     """
     serializer_class = MotoSerializer
     queryset = Moto.objects.all()
+    permission_classes = [IsAuthenticated]  # просмотр списка мото доступно только авторизованным пользователям
+
+    pagination_class = VehiclePaginator
 
 
 class MotoRetrieveAPIView(generics.RetrieveAPIView):
@@ -45,6 +60,8 @@ class MotoUpdateAPIView(generics.UpdateAPIView):
     """
     serializer_class = MotoSerializer
     queryset = Moto.objects.all()
+
+    permission_classes = [IsOwnerOrStaff]  # просмотр списка мото доступно только владельцам или менеджеру
 
 
 class MotoDestroyAPIView(generics.DestroyAPIView):
