@@ -18,10 +18,10 @@ class CarSerializer(serializers.ModelSerializer):
     Класс сериализатора для модели Car
     """
     # определяем дополнительное поле в модели Car
-    last_milage = serializers.IntegerField(source='milage_set.all.first.milage')  # данные о пробеге
+    last_milage = serializers.IntegerField(source='milage_set.all.first.milage', read_only=True)  # данные о пробеге
     # milage = MilageSerializer(source='milage_set', many=True)
     # параметр source теперь не нужен, т.к. в модели определили related_name='milage'
-    milage = MilageSerializer(many=True)
+    milage = MilageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Car
