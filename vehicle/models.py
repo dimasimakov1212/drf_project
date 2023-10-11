@@ -10,6 +10,7 @@ class Car(models.Model):
     car_description = models.TextField(verbose_name='описание')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='владелец',
                               blank=True, null=True)
+    amount = models.IntegerField(default=1000, verbose_name='цена')
 
     def __str__(self):
         # Строковое отображение объекта
