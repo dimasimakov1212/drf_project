@@ -81,6 +81,7 @@ class MilageCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         new_milage = serializer.save()  # получаем новый пробег
 
+        # проверяем правильность заполнения данных о пробеге
         if new_milage.car:
             check_milage.delay(new_milage.car_id, 'Car')
         else:
