@@ -60,4 +60,4 @@ class Milage(models.Model):
     class Meta:
         verbose_name = 'пробег'  # Настройка для наименования одного объекта
         verbose_name_plural = 'пробег'  # Настройка для наименования набора объектов
-        ordering = ('-year',)  # сортировка
+        ordering = ('-id',)  # сортировка
